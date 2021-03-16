@@ -17,5 +17,5 @@ movies = [
 
 
 @app.route('/')
-def hello():
-    return "Hello Flask!"
+def index():
+    return render_template('index.html', name=name, movies=movies)
