@@ -1,11 +1,13 @@
 *.pyc
 *~
 
+#develop IDE
 __pycache__
+
+#MacOS file
 .DS_Store
 
+#virtual environment
 .env
-
 env
 
-.gitignore
