@@ -1,7 +1,8 @@
-from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
 import os
 import sys
+from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+
 
 WIN = sys.platform.startswith('win')
 if WIN:
