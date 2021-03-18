@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-
 import click
 from flask import Flask, render_template, request, url_for, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
-# SQLite URI compatible
+
 WIN = sys.platform.startswith('win')
 if WIN:
     prefix = 'sqlite:///'
@@ -64,6 +64,14 @@ def forge():
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20))
+    username = db.Column(db.String(20))
+    password_hash = db.Column(db.String(128))
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def validate_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 
 class Movie(db.Model):
@@ -97,9 +105,8 @@ def index():
         db.session.commit()
         flash('Item created.')
         return redirect(url_for('index'))
-    user = User.query.first()
     movies = Movie.query.all()
-    return render_template('index.html', user=user, movies=movies)
+    return render_template('index.html', movies=movies)
 
 
 @app.route('/movie/edit/<int:movie_id>', methods=['GET', 'POST'])
@@ -123,7 +130,7 @@ def edit(movie_id):
     return render_template('edit.html', movie=movie)
 
 
-@app.route('/movie/delete/<int:movie_id>', methods=['POST']) # 限定只接受 POST 请求
+@app.route('/movie/delete/<int:movie_id>', methods=['POST'])
 def delete(movie_id):
     movie = Movie.query.get_or_404(movie_id)
     db.session.delete(movie)
