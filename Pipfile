@@ -6,7 +6,8 @@ name = "pypi"
 [dev-packages]
 
 [packages]
-flask = "*"
-python-dotenv = "*"
-flask-sqlalchemy = "*"
-flask-login = "*"
+flask = "==1.1.1"
+flask-sqlalchemy = "==2.4.0"
+sqlalchemy = "==1.3.6"
+flask-login = "==0.4.1"
+coverage = "*"
